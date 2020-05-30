@@ -14,4 +14,8 @@ defmodule Pair.Challenges do
   def get_challenge_by_id(id) do
     Repo.get_by(Challenge, id: id)
   end
+
+  def get_challenge(challenges, id) do
+    Enum.find(challenges, fn c -> c.id == String.to_integer(id) end)
+  end
 end

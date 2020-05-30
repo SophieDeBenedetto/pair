@@ -10,7 +10,7 @@ defmodule PairWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
-    plug :put_root_layout, {PairWeb.LayoutView, "app.html"}
+    # plug :put_root_layout, {PairWeb.LayoutView, "app.html"}
   end
 
   pipeline :api do
@@ -66,9 +66,8 @@ defmodule PairWeb.Router do
     put "/users/settings/update_password", UserSettingsController, :update_password
     put "/users/settings/update_email", UserSettingsController, :update_email
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-    # get "/challenges", ChallengeController, :index
-    live "/challenges", ChallengeLive.Index, :index
-    live "/challenges/:id", ChallengeLive.Index, :show
+    live "/challenges", ChallengeLive.Index, :index, layout: {PairWeb.LayoutView, "app.html"}
+    live "/challenges/:id", ChallengeLive.Index, :show, layout: {PairWeb.LayoutView, "app.html"}
   end
 
   scope "/", PairWeb do
