@@ -1,0 +1,6 @@
+<h1>Challenges</h1>
+<ul>
+  <%= for c <- @challenges do %>
+    <li><%= c.title %></li>
+  <% end %>
+</ul>

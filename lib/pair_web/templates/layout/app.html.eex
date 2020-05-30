@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Pair · Phoenix Framework</title>
+    <!-- <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.5.0/minty/bootstrap.min.css">
+    <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </head>
+  <body>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="collapse navbar-collapse" id="navbarColor02">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <%= link "Pair", to: Routes.page_path(@conn, :index), class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link "Challenges", to: Routes.challenge_path(@conn, :index), class: "nav-link" %>
+            </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
+            <%= if @current_user do %>
+              <li class="nav-item active"><span class="nav-link">Hi, <%= @current_user.email %></span></li>
+              <li class="nav-item active"><%= link "Settings", to: Routes.user_settings_path(@conn, :edit), class: "nav-link" %></li>
+              <li class="nav-item active"><%= link "Logout", to: Routes.user_session_path(@conn, :delete), method: :delete, class: "nav-link" %></li>
+              <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+                <li class="nav-item active"><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home), class: "nav-link" %></li>
+              <% end %>
+            <% else %>
+              <li class="nav-item active"><%= link "Register", to: Routes.user_registration_path(@conn, :new), class: "nav-link" %></li>
+              <li class="nav-item active"><%= link "Login", to: Routes.user_session_path(@conn, :new), class: "nav-link" %></li>
+            <% end %>
+          </ul>
+        </div>
+      </nav>
+    <main role="main" class="container" style="margin-top: 5%;">
+      <%= if get_flash(@conn, :info) do %>
+        <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+      <% end %>
+      <%= if  get_flash(@conn, :error) do %>
+        <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+      <% end %>
+      <%= @inner_content %>
+    </main>
+  </body>
+</html>
