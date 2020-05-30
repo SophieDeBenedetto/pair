@@ -1,0 +1,8 @@
+<h1><%= titleize(@challenge.title) %></h1>
+<br>
+<div class="card text-white bg-info mb-3" style="max-width: 60rem;">
+  <div class="card-body">
+    <h4 class="card-title">Prompt</h4>
+    <p class="card-text"><%= text_to_html(@challenge.prompt) %></p>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 <h1>Challenges</h1>
 <ul>
   <%= for c <- @challenges do %>
-    <li><%= c.title %></li>
+    <li>
+      <%= link c.title, to: Routes.challenge_path(@conn, :show, c) %>
+    </li>
   <% end %>
 </ul>

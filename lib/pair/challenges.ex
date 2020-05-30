@@ -10,4 +10,8 @@ defmodule Pair.Challenges do
   def get_challenges do
     Repo.all(Challenge)
   end
+
+  def get_challenge_by_id(id) do
+    Repo.get_by(Challenge, id: id)
+  end
 end

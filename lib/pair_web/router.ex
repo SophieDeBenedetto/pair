@@ -6,10 +6,11 @@ defmodule PairWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug :fetch_flash
+    plug :fetch_live_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+    plug :put_root_layout, {PairWeb.LayoutView, "app.html"}
   end
 
   pipeline :api do
@@ -66,6 +67,7 @@ defmodule PairWeb.Router do
     put "/users/settings/update_email", UserSettingsController, :update_email
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
     get "/challenges", ChallengeController, :index
+    live "/challenges/:id", ChallengeLive
   end
 
   scope "/", PairWeb do

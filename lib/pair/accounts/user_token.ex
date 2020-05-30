@@ -126,6 +126,10 @@ defmodule Pair.Accounts.UserToken do
     from Pair.Accounts.UserToken, where: [token: ^token, context: ^context]
   end
 
+  def token_query(token) do
+    from Pair.Accounts.UserToken, where: [token: ^token]
+  end
+
   @doc """
   Gets all tokens for the given user for the given contexts.
   """
