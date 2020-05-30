@@ -3,5 +3,5 @@
   <p class="lead">A pair programming app powered by Phoenix Live View</p>
   <hr class="my-4">
   <p>View the list of challenges to get started programming with pals in the language of your choosing.</p>
-  <%= link "Challenges", to: Routes.challenge_path(@conn, :index), class: "btn btn-primary btn-lg" %>
+  <%= link "Challenges", to: Routes.challenge_index_path(@conn, :index), class: "btn btn-primary btn-lg" %>
 </div>

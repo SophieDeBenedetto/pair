@@ -66,8 +66,9 @@ defmodule PairWeb.Router do
     put "/users/settings/update_password", UserSettingsController, :update_password
     put "/users/settings/update_email", UserSettingsController, :update_email
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-    get "/challenges", ChallengeController, :index
-    live "/challenges/:id", ChallengeLive
+    # get "/challenges", ChallengeController, :index
+    live "/challenges", ChallengeLive.Index, :index
+    live "/challenges/:id", ChallengeLive.Index, :show
   end
 
   scope "/", PairWeb do

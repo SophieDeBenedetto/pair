@@ -1,0 +1,26 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3">
+      <h1>Challenges</h1>
+      <br>
+      <ul class="list-group">
+        <%= for c <- @challenges do %>
+          <li class="list-group-item <%= if @challenge && (@challenge.id == c.id), do: "active"  %>">
+            <%= if @challenge && (@challenge.id == c.id) do  %>
+              <%= live_patch c.title, to: Routes.challenge_index_path(@socket, :show, c.id), style: "color: white;"%>
+            <%= else %>
+            <%= live_patch c.title, to: Routes.challenge_index_path(@socket, :show, c.id)%>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="col-lg">
+      <%= if @challenge do %>
+        <%= live_component(@socket,  PairWeb.ChallengeLive.ChallengeComponent, id: @challenge.id, challenge: @challenge) %>
+      <%= else %>
+        <%= render PairWeb.ChallengeView, "_challenge_placeholder.html", %{} %>
+      <%= end %>
+    </div>
+  </div>
+</div>
