@@ -7,7 +7,6 @@
     "watch": "webpack --mode development --watch"
   },
   "dependencies": {
-    "ace-builds": "^1.4.11",
     "phoenix": "file:../deps/phoenix",
     "phoenix_html": "file:../deps/phoenix_html",
     "phoenix_live_view": "file:../deps/phoenix_live_view"

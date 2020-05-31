@@ -24,6 +24,12 @@ defmodule PairWeb.ChallengeLive.ChallengeComponent do
     {:noreply, socket}
   end
 
+  def handle_event("update_body", %{"body" => body}, socket) do
+    message = {:updated_challenge,%{body: body}}
+    Phoenix.PubSub.broadcast(Pair.PubSub, challenge_topic(socket), message)
+    {:noreply, socket}
+  end
+
   def challenge_topic(socket) do
     "challenge:" <> to_string(socket.assigns.challenge.id)
   end

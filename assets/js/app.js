@@ -12,7 +12,6 @@ import "../css/app.scss"
 //     import {Socket} from "phoenix"
 //     import socket from "./socket"
 //
-import Ace from "ace-builds"
 
 import {Socket} from "phoenix"
 import LiveSocket from "phoenix_live_view"
@@ -20,61 +19,17 @@ import LiveSocket from "phoenix_live_view"
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
 var editors = []
 let Hooks = {}
-Hooks.AceEditor = {
+Hooks.CodeEditor = {
   mounted() {
-    let node = this;
-    let language = node.el.dataset.language ? node.el.dataset.language : "elixir"
-    let challengeId = node.el.dataset.editor
-    let editor = Ace.edit(`editor${challengeId}`, {
-      maxLines: 50,
-      minLines: 10,
-      mode: `ace/mode/${language}`,
-      theme: "ace/theme/solarized_light"
-    })
-    editors.push({id: challengeId, editor: editor})
-    editor.getSession().setTabSize(2)
-    document.getElementById(`editor${challengeId}`).style.fontSize='18px';
-    document.getElementById('theme').addEventListener("change", function() {
-      let theme = document.getElementById('theme').value;
-      editor.setTheme(`ace/theme/${theme}`);
-    });
-    var that = this;
-    document.getElementById('language').addEventListener("change", function() {
-      let language = document.getElementById('language').value;
-      editor.session.setMode(`ace/mode/${language}`);
-      that.pushEventTo(`#editor-${challengeId}`, "update_language", { language: language })
-    });
+    setupCodeEditor(this)
   },
   updated() {
-    let node = this;
-    let language = node.el.dataset.language ? node.el.dataset.language : "elixir";
-    let challengeId = node.el.dataset.editor;
-    let challengeBody = node.el.dataset.body;
-    editors.forEach(ed => {
-      ed.editor.destroy();
-    })
-    let editor = Ace.edit(`editor${challengeId}`, {
-      maxLines: 50,
-      minLines: 10,
-      mode: `ace/mode/${language}`,
-      theme: "ace/theme/solarized_light"
-    })
-    editors.push({id: challengeId, editor: editor})
-    editor.getSession().setTabSize(2)
-    editor.setHighlightActiveLine(false);
-    editor.setValue(challengeBody);
-    document.getElementById(`editor${challengeId}`).style.fontSize='18px';
-    editor.resize();
-    document.getElementById('theme').addEventListener("change", function() {
-      let theme = document.getElementById('theme').value;
-      editor.setTheme(`ace/theme/${theme}`);
-    });
-    var that = this;
-    document.getElementById('language').addEventListener("change", function() {
-      let language = document.getElementById('language').value;
-      editor.session.setMode(`ace/mode/${language}`);
-      that.pushEventTo(`#editor-${challengeId}`, "update_language", { language: language })
-    });
+    let mode = this.el.dataset.language;
+    let value = this.el.dataset.body;
+    let currentPosition = window.Editor.getCursor();
+    window.Editor.setOption("mode", mode);
+    window.Editor.setValue(value);
+    window.Editor.setCursor(currentPosition);
   }
 }
 
@@ -89,3 +44,31 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)
 window.liveSocket = liveSocket
 import "phoenix_html"
+
+function setupCodeEditor(that) {
+  let challengeId = that.el.dataset.id;
+  let mode = that.el.dataset.language;
+  let value = that.el.dataset.body;
+  window.Editor = new CodeMirror.fromTextArea(document.getElementById("editor" + challengeId), {
+    lineNumbers: true,
+    mode: "javascript",
+    theme: "3024-day",
+    lineWrapping: false
+  });
+  window.Editor.setOption("mode", mode);
+  window.Editor.setValue(value);
+  document.getElementById('theme').addEventListener("change", function() {
+    let theme = document.getElementById('theme').value;
+    window.Editor.setOption("theme", theme);
+  });
+  const target = that.el.dataset.phoenixTarget;
+  document.getElementById('language').addEventListener("change", function() {
+    let language = document.getElementById('language').value;
+    window.Editor.setOption("mode", language);
+    that.pushEventTo(target, "update_language", { language: language })
+  });
+  window.Editor.on("change", e => {
+    let body = window.Editor.getValue();
+    that.pushEventTo(target, "update_body", { body: body })
+  })
+}
