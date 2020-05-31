@@ -13,17 +13,15 @@ import "../css/app.scss"
 //     import socket from "./socket"
 //
 import Ace from "ace-builds"
-// import "ace-builds/webpack-resolver";
 
 import {Socket} from "phoenix"
 import LiveSocket from "phoenix_live_view"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-
+var editors = []
 let Hooks = {}
 Hooks.AceEditor = {
   mounted() {
-    debugger;
     let node = this;
     let language = node.el.dataset.language ? node.el.dataset.language : "elixir"
     let challengeId = node.el.dataset.editor
@@ -33,6 +31,7 @@ Hooks.AceEditor = {
       mode: `ace/mode/${language}`,
       theme: "ace/theme/solarized_light"
     })
+    editors.push({id: challengeId, editor: editor})
     editor.getSession().setTabSize(2)
     document.getElementById(`editor${challengeId}`).style.fontSize='18px';
     document.getElementById('theme').addEventListener("change", function() {
@@ -48,16 +47,24 @@ Hooks.AceEditor = {
   },
   updated() {
     let node = this;
-    let language = node.el.dataset.language ? node.el.dataset.language : "elixir"
-    let challengeId = node.el.dataset.editor
+    let language = node.el.dataset.language ? node.el.dataset.language : "elixir";
+    let challengeId = node.el.dataset.editor;
+    let challengeBody = node.el.dataset.body;
+    editors.forEach(ed => {
+      ed.editor.destroy();
+    })
     let editor = Ace.edit(`editor${challengeId}`, {
       maxLines: 50,
       minLines: 10,
       mode: `ace/mode/${language}`,
       theme: "ace/theme/solarized_light"
     })
+    editors.push({id: challengeId, editor: editor})
     editor.getSession().setTabSize(2)
+    editor.setHighlightActiveLine(false);
+    editor.setValue(challengeBody);
     document.getElementById(`editor${challengeId}`).style.fontSize='18px';
+    editor.resize();
     document.getElementById('theme').addEventListener("change", function() {
       let theme = document.getElementById('theme').value;
       editor.setTheme(`ace/theme/${theme}`);

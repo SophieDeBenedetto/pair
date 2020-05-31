@@ -1,4 +1,4 @@
-<h1><%= titleize(@challenge.title) %></h1>
+<h1 phx-target="<%= @myself %>" id="editor-<%= @challenge.id %>"><%= titleize(@challenge.title) %></h1>
 <br>
 <div class="card text-white bg-info mb-3" style="max-width: 60rem;">
   <div class="card-body">
@@ -60,15 +60,7 @@
     </select>
   </div>
 </div>
-<span phx-target="<%= @myself %>" id="editor-<%= @challenge.id %>">
-  <pre id="editor<%= @challenge.id %>" data-language="<%= @challenge.language %>" data-editor="<%= @challenge.id %>" phx-hook="AceEditor">
-
-    <%= @challenge.body %>
-    function foo(items) {
-      var i;
-      for (i = 0; i &lt; items.length; i++) {
-        alert("Ace Rocks " + items[i]);
-      }
-    }
-  </pre>
+<span>
+  <div id="editor<%= @challenge.id %>" data-language="<%= @challenge.language %>" data-editor="<%= @challenge.id %>" phx-hook="AceEditor" data-body="<%= @challenge.body %>"><%= @challenge.body %>
+  </div>
 </span>
