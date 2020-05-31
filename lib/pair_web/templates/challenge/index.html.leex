@@ -17,7 +17,7 @@
     </div>
     <div class="col-lg">
       <%= if @challenge do %>
-        <%= live_component(@socket,  PairWeb.ChallengeLive.ChallengeComponent, id: @challenge.id, challenge: @challenge) %>
+        <%= live_component(@socket,  PairWeb.ChallengeLive.ChallengeComponent, id: "editor-#{@challenge.id}", challenge: @challenge) %>
       <%= else %>
         <%= render PairWeb.ChallengeView, "_challenge_placeholder.html", %{} %>
       <%= end %>

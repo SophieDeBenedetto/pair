@@ -6,3 +6,69 @@
     <p class="card-text"><%= text_to_html(@challenge.prompt) %></p>
   </div>
 </div>
+<div class="row">
+  <div class="form-group col-sm-4">
+    <label for="theme">Theme</label>
+    <select class="form-control" id="theme">
+      <option>ambiance</option>
+      <option>chaos</option>
+      <option>chrome</option>
+      <option>clouds</option>
+      <option>clouds_midnight</option>
+      <option>cobalt</option>
+      <option>crimson_editor</option>
+      <option>dawn</option>
+      <option>dracula</option>
+      <option>dreamweaver</option>
+      <option>eclipse</option>
+      <option>github</option>
+      <option>gob</option>
+      <option>gruvbox</option>
+      <option>idle_fingers</option>
+      <option>iplastic</option>
+      <option>katzenmilch</option>
+      <option>kr_theme</option>
+      <option>kuroir</option>
+      <option>merbivore</option>
+      <option>merbivore_soft</option>
+      <option>mono_industrial</option>
+      <option>monokai</option>
+      <option>nord_dark</option>
+      <option>pastel_on_dark</option>
+      <option>solarized_dark</option>
+      <option selected>solarized_light</option>
+      <option>sqlserver</option>
+      <option>terminal</option>
+      <option>textmate</option>
+      <option>tomorrow</option>
+      <option>tomorrow_night</option>
+      <option>tomorrow_night_blue</option>
+      <option>tomorrow_night_bright</option>
+      <option>tomorrow_night_eighties</option>
+      <option>twilight</option>
+      <option>vibrant_ink</option>
+      <option>xcode</option>
+    </select>
+  </div>
+  <div class="form-group col-sm-5">
+    <%= @challenge.language %>
+    <label for="language">Language</label>
+    <select class="form-control" id="language">
+      <%= for language <- @languages do %>
+        <option value="<%= language %>" <%= if @challenge.language == language, do: "selected" %>><%= language %></option>
+      <% end %>
+    </select>
+  </div>
+</div>
+<span phx-target="<%= @myself %>" id="editor-<%= @challenge.id %>">
+  <pre id="editor<%= @challenge.id %>" data-language="<%= @challenge.language %>" data-editor="<%= @challenge.id %>" phx-hook="AceEditor">
+
+    <%= @challenge.body %>
+    function foo(items) {
+      var i;
+      for (i = 0; i &lt; items.length; i++) {
+        alert("Ace Rocks " + items[i]);
+      }
+    }
+  </pre>
+</span>

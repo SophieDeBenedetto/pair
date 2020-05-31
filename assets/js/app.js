@@ -12,12 +12,67 @@ import "../css/app.scss"
 //     import {Socket} from "phoenix"
 //     import socket from "./socket"
 //
+import Ace from "ace-builds"
+// import "ace-builds/webpack-resolver";
 
 import {Socket} from "phoenix"
 import LiveSocket from "phoenix_live_view"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}});
+
+let Hooks = {}
+Hooks.AceEditor = {
+  mounted() {
+    debugger;
+    let node = this;
+    let language = node.el.dataset.language ? node.el.dataset.language : "elixir"
+    let challengeId = node.el.dataset.editor
+    let editor = Ace.edit(`editor${challengeId}`, {
+      maxLines: 50,
+      minLines: 10,
+      mode: `ace/mode/${language}`,
+      theme: "ace/theme/solarized_light"
+    })
+    editor.getSession().setTabSize(2)
+    document.getElementById(`editor${challengeId}`).style.fontSize='18px';
+    document.getElementById('theme').addEventListener("change", function() {
+      let theme = document.getElementById('theme').value;
+      editor.setTheme(`ace/theme/${theme}`);
+    });
+    var that = this;
+    document.getElementById('language').addEventListener("change", function() {
+      let language = document.getElementById('language').value;
+      editor.session.setMode(`ace/mode/${language}`);
+      that.pushEventTo(`#editor-${challengeId}`, "update_language", { language: language })
+    });
+  },
+  updated() {
+    let node = this;
+    let language = node.el.dataset.language ? node.el.dataset.language : "elixir"
+    let challengeId = node.el.dataset.editor
+    let editor = Ace.edit(`editor${challengeId}`, {
+      maxLines: 50,
+      minLines: 10,
+      mode: `ace/mode/${language}`,
+      theme: "ace/theme/solarized_light"
+    })
+    editor.getSession().setTabSize(2)
+    document.getElementById(`editor${challengeId}`).style.fontSize='18px';
+    document.getElementById('theme').addEventListener("change", function() {
+      let theme = document.getElementById('theme').value;
+      editor.setTheme(`ace/theme/${theme}`);
+    });
+    var that = this;
+    document.getElementById('language').addEventListener("change", function() {
+      let language = document.getElementById('language').value;
+      editor.session.setMode(`ace/mode/${language}`);
+      that.pushEventTo(`#editor-${challengeId}`, "update_language", { language: language })
+    });
+  }
+}
+
+
+let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks, params: {_csrf_token: csrfToken}});
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()

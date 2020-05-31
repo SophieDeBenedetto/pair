@@ -7,6 +7,12 @@ defmodule Pair.Challenges do
     |> Repo.insert!()
   end
 
+  def update_challenge(challenge, attrs) do
+    challenge
+    |> Challenge.changeset(attrs)
+    |> Repo.update()
+  end
+
   def get_challenges do
     Repo.all(Challenge)
   end
