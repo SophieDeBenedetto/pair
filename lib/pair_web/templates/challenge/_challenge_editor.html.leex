@@ -1,0 +1,5 @@
+<span data-id="<%= @challenge.id %>" data-language="<%= @challenge.language %>" data-body="<%= @challenge.body %>" data-phoenix-target="#editor-<%= @challenge.id %>" phx-target="<%= @myself %>" id="editor-<%= @challenge.id %>" phx-hook="CodeEditor">
+  <div phx-update="ignore">
+    <textarea id="editor<%= @challenge.id %>"><%= @challenge.body %></textarea>
+  </div>
+</span>

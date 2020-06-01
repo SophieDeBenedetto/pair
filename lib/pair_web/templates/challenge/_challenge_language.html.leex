@@ -1,0 +1,8 @@
+<div class="form-group col-sm-5">
+  <label for="language">Language</label>
+  <select class="form-control" id="language">
+    <%= for language <- @languages do %>
+      <option value="<%= language %>" <%= if @challenge.language == language, do: "selected" %>><%= language %></option>
+    <% end %>
+  </select>
+</div>
