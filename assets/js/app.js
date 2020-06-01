@@ -24,12 +24,8 @@ Hooks.CodeEditor = {
     setupCodeEditor(this)
   },
   updated() {
-    let mode = this.el.dataset.language;
-    let value = this.el.dataset.body;
-    let currentPosition = window.Editor.getCursor();
-    window.Editor.setOption("mode", mode);
-    window.Editor.setValue(value);
-    window.Editor.setCursor(currentPosition);
+    // don't reinitialize editor here bc it will reset to default theme and mess up cursor placement
+    updateCodeEditor(this)
   }
 }
 
@@ -46,6 +42,13 @@ window.liveSocket = liveSocket
 import "phoenix_html"
 
 function setupCodeEditor(that) {
+  createCodeEditor(that);
+  changeThemeListener();
+  changeLanguageListener(that);
+  changeBodyListener(that);
+}
+
+function createCodeEditor(that) {
   let challengeId = that.el.dataset.id;
   let mode = that.el.dataset.language;
   let value = that.el.dataset.body;
@@ -57,18 +60,37 @@ function setupCodeEditor(that) {
   });
   window.Editor.setOption("mode", mode);
   window.Editor.setValue(value);
+}
+
+function changeThemeListener() {
   document.getElementById('theme').addEventListener("change", function() {
     let theme = document.getElementById('theme').value;
     window.Editor.setOption("theme", theme);
   });
-  const target = that.el.dataset.phoenixTarget;
+}
+
+function changeLanguageListener(that) {
+  let target = that.el.dataset.phoenixTarget;
   document.getElementById('language').addEventListener("change", function() {
     let language = document.getElementById('language').value;
     window.Editor.setOption("mode", language);
     that.pushEventTo(target, "update_language", { language: language })
   });
+}
+
+function changeBodyListener(that) {
+  let target = that.el.dataset.phoenixTarget;
   window.Editor.on("change", e => {
     let body = window.Editor.getValue();
     that.pushEventTo(target, "update_body", { body: body })
   })
+}
+
+function updateCodeEditor(that) {
+  let mode = that.el.dataset.language;
+  let value = that.el.dataset.body;
+  let currentPosition = window.Editor.getCursor();
+  window.Editor.setOption("mode", mode);
+  window.Editor.setValue(value);
+  window.Editor.setCursor(currentPosition);
 }
