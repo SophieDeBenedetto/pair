@@ -74,7 +74,7 @@ function changeLanguageListener(that) {
   document.getElementById('language').addEventListener("change", function() {
     let language = document.getElementById('language').value;
     window.Editor.setOption("mode", language);
-    that.pushEventTo(target, "update_language", { language: language })
+    that.pushEventTo(target, "update", { language: language })
   });
 }
 
@@ -82,7 +82,7 @@ function changeBodyListener(that) {
   let target = that.el.dataset.phoenixTarget;
   window.Editor.on("change", e => {
     let body = window.Editor.getValue();
-    that.pushEventTo(target, "update_body", { body: body })
+    that.pushEventTo(target, "update", { body: body })
   })
 }
 

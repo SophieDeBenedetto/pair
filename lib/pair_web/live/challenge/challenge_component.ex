@@ -18,14 +18,8 @@ defmodule PairWeb.ChallengeLive.ChallengeComponent do
     {:ok, assign(socket, :languages, @languages)}
   end
 
-  def handle_event("update_language", %{"language" => language}, socket) do
-    message = {:updated_challenge,%{language: language}}
-    Phoenix.PubSub.broadcast(Pair.PubSub, challenge_topic(socket), message)
-    {:noreply, socket}
-  end
-
-  def handle_event("update_body", %{"body" => body}, socket) do
-    message = {:updated_challenge,%{body: body}}
+  def handle_event("update", attrs, socket) do
+    message = {:updated_challenge, attrs}
     Phoenix.PubSub.broadcast(Pair.PubSub, challenge_topic(socket), message)
     {:noreply, socket}
   end

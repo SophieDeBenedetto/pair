@@ -20,7 +20,7 @@ defmodule PairWeb.ChallengeLive.Index do
 
   def handle_params(%{"id" => id}, _uri, %{assigns: %{challenges: challenges}} = socket) do
     challenge = Challenges.get_challenge_by_id(id)
-    Phoenix.PubSub.subscribe(Pair.PubSub, "challenge:#{challenge.id}")
+    Phoenix.PubSub.subscribe(Pair.PubSub, challenge_topic(challenge))
     {:noreply, assign(socket, :challenge, challenge)}
   end
 
@@ -33,5 +33,9 @@ defmodule PairWeb.ChallengeLive.Index do
     # and fetching from cached list in handle_params/3
     {:ok, challenge} = Challenges.update_challenge(socket.assigns.challenge, attrs)
     {:noreply, assign(socket, :challenge, challenge)}
+  end
+
+  def challenge_topic(challenge) do
+    "challenge:" <> to_string(challenge.id)
   end
 end
