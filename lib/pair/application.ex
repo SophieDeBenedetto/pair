@@ -14,7 +14,8 @@ defmodule Pair.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Pair.PubSub},
       # Start the Endpoint (http/https)
-      PairWeb.Endpoint
+      PairWeb.Endpoint,
+      PairWeb.ChallengePresence
       # Start a worker by calling: Pair.Worker.start_link(arg)
       # {Pair.Worker, arg}
     ]

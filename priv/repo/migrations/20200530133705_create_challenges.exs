@@ -10,6 +10,5 @@ defmodule Pair.Repo.Migrations.CreateChallenges do
 
       timestamps()
     end
-
   end
 end

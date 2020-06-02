@@ -46,6 +46,7 @@ function setupCodeEditor(that) {
   changeThemeListener();
   changeLanguageListener(that);
   changeBodyListener(that);
+  editorBlurListener(that);
 }
 
 function createCodeEditor(that) {
@@ -83,6 +84,14 @@ function changeBodyListener(that) {
   window.Editor.on("change", e => {
     let body = window.Editor.getValue();
     that.pushEventTo(target, "update", { body: body })
+  })
+}
+
+function editorBlurListener(that) {
+  let target = that.el.dataset.phoenixTarget;
+  window.Editor.on("blur", e => {
+    let body = window.Editor.getValue();
+    that.pushEventTo(target, "stop_typing", { })
   })
 }
 

@@ -3,7 +3,7 @@ defmodule PairWeb.ChallengeView do
 
   def titleize(string) do
     string
-    |> String.split
+    |> String.split()
     |> Stream.map(&String.capitalize/1)
     |> Enum.join(" ")
   end
